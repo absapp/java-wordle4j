@@ -1,5 +1,8 @@
 package ru.yandex.practicum;
 
+import java.io.IOException;
+import java.nio.file.Path;
+
 /*
 в этом классе хранится словарь и состояние игры
     текущий шаг
@@ -14,10 +17,85 @@ package ru.yandex.practicum;
  */
 public class WordleGame {
 
-    private String answer;
+    private final String answer;
+    private int steps = 0;
+    private final int maxSteps;
+    private final WordleDictionary dictionary;
 
-    private int steps;
+    public WordleGame(int maxSteps, Path dictionaryPath) throws IOException {
+        validateInput(steps, dictionaryPath);
 
-    private WordleDictionary dictionary;
+        this.maxSteps = maxSteps;
+        dictionary = WordleDictionaryLoader.quickLoad(dictionaryPath);
+        answer = dictionary.getRandomWord();
+    }
 
+    private void validateInput(int steps, Path dictionaryPath) {
+        if (steps <= 0) {
+            throw new IllegalArgumentException("maxAttempts должен быть положительным");
+        }
+        if (dictionaryPath == null) {
+            throw new NullPointerException("dictionaryPath не может быть null");
+        }
+    }
+
+    private GameStatus makeGuess(String guess) {
+        if (steps == maxSteps) {
+            return GameStatus.LOSE;
+        } else if (guess.length() < 5 || guess.length() > 5) {
+            return GameStatus.WRONG_LENGTH;
+        } else if (guess.equals(answer)) {
+            return GameStatus.WIN;
+        } else if (!dictionary.contains(guess)) {
+            return GameStatus.NOT_IN_DICTIONARY;
+        } else {
+            steps++;
+            return GameStatus.INCORRECT;
+        }
+    }
+
+    public String playGame(String guess) {
+        guess = normalizeWord(guess);
+        GameStatus guessStatus = makeGuess(guess);
+
+        String message = switch (guessStatus) {
+            case LOSE -> String.format(
+                    "Вы проиграли. Загаданное слово: '%s'",
+                    answer
+            );
+            case WIN -> String.format(
+                    "Победа! Вы отгадали слово '%s' за %d попыток!",
+                    answer, steps
+            );
+            case WRONG_LENGTH -> throw new WrongNumberOfLetters(answer.length(), guess.length());
+            case NOT_IN_DICTIONARY -> throw new WordNotFoundInDictionary(guess);
+            case INCORRECT -> analyzeGuess(guess) + "Осталось " + steps + " попыток";
+        };
+
+        return message;
+    }
+
+    private String analyzeGuess(String guess) {
+        StringBuilder result = new StringBuilder();
+        guess = normalizeWord(guess);
+
+        for (int i = 0; i < answer.length(); i++) {
+            char guessChar = guess.charAt(i);
+            char answerChar = answer.charAt(i);
+
+            if (guessChar == answerChar) {
+                result.append("+");
+            } else if (answer.indexOf(guessChar) >= 0) {
+                result.append("^");
+            } else {
+                result.append("-");
+            }
+        }
+
+        return result.toString();
+    }
+
+    private String normalizeWord(String guess) {
+       return guess.toLowerCase().replaceAll("ё", "е").trim();
+    }
 }
