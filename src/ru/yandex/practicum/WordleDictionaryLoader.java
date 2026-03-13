@@ -15,11 +15,16 @@ import java.util.List;
     на выходе должен быть класс WordleDictionary
  */
 public class WordleDictionaryLoader {
-
-    private final Path dictionaryPath; // = Path.of("./words_ru");
+    private final Path dictionaryPath;
+    private final WordleLogger logger;  // делаем final
 
     public WordleDictionaryLoader(Path dictionaryPath) {
+        this(dictionaryPath, null);  // вызываем основной конструктор
+    }
+
+    public WordleDictionaryLoader(Path dictionaryPath, WordleLogger logger) {
         this.dictionaryPath = dictionaryPath;
+        this.logger = logger;
     }
 
     public WordleDictionary loadFiveLetterWords() throws IOException {
@@ -36,7 +41,7 @@ public class WordleDictionaryLoader {
                 }
             }
         }
-        return new WordleDictionary(dictionary);
+        return new WordleDictionary(dictionary, logger);
     }
 
     public static WordleDictionary quickLoad(Path path) throws IOException {

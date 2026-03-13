@@ -5,5 +5,6 @@ public enum GameStatus {
     NOT_IN_DICTIONARY,
     WIN,
     LOSE,
+    HELP,
     INCORRECT;
 }
