@@ -41,6 +41,9 @@ public class WordleDictionaryLoader {
                 }
             }
         }
+        if (dictionary.isEmpty()) {
+            throw new IllegalStateException("Словарь пуст!");
+        }
         return new WordleDictionary(dictionary, logger);
     }
 

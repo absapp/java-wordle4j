@@ -69,6 +69,10 @@ public class WordleDictionary {
 
     public String getHintWord(Map<String, String> guessTry) {
         List<String> hintList = hintList(guessTry);
+        if (hintList.isEmpty()) {
+            return getRandomWord();
+        }
+
         return hintList.get(random.nextInt(hintList.size()));
     }
 }

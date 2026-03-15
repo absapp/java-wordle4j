@@ -50,7 +50,7 @@ public class Wordle {
 
         } catch (IOException e) {
             logger.log("ОШИБКА: " + e.getMessage());
-        } catch (IllegalArgumentException | NullPointerException e) {
+        } catch (IllegalArgumentException | NullPointerException | IllegalStateException e) {
             logger.log("ОШИБКА конфигурации: " + e.getMessage());
         }
     }

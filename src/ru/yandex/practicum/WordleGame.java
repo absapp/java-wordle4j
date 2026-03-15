@@ -26,6 +26,14 @@ public class WordleGame {
     private final Map<String, String> guessTry = new LinkedHashMap<>();
     private final WordleLogger logger;
 
+    // конструктор для тестов
+    WordleGame(String predefinedAnswer, int maxSteps, WordleDictionary dictionary, WordleLogger logger) {
+        this.answer = predefinedAnswer;
+        this.maxSteps = maxSteps;
+        this.dictionary = dictionary;
+        this.logger = logger;
+    }
+
     public WordleGame(int maxSteps, Path dictionaryPath, WordleLogger logger) throws IOException {
         validateInput(maxSteps, dictionaryPath);
 
@@ -91,7 +99,7 @@ public class WordleGame {
             }
             case WRONG_LENGTH -> throw new WrongNumberOfLetters(answer.length(), guess.length());
             case NOT_IN_DICTIONARY -> throw new WordNotFoundInDictionary(guess);
-            case INCORRECT -> analyzeGuess(guess) + "Осталось " + (maxSteps - steps) + " попыток";
+            case INCORRECT -> guess + "\n" + analyzeGuess(guess) + " Осталось " + (maxSteps - steps) + " попыток";
         };
 
         return message;
@@ -99,7 +107,6 @@ public class WordleGame {
 
     private String analyzeGuess(String guess) {
         StringBuilder result = new StringBuilder();
-        guess = normalizeWord(guess);
 
         for (int i = 0; i < answer.length(); i++) {
             char guessChar = guess.charAt(i);
@@ -123,5 +130,9 @@ public class WordleGame {
             return "";
         }
         return guess.toLowerCase().replaceAll("ё", "е").trim();
+    }
+
+    public String getAnswer() {
+        return answer;
     }
 }
