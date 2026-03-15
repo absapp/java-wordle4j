@@ -55,8 +55,7 @@ public class WordleGame {
     private GameStatus makeGuess(String guess) {
         if (guess.equals(answer)) {
             return GameStatus.WIN;
-        }
-        else if (steps == maxSteps) {
+        } else if (steps == maxSteps) {
             return GameStatus.LOSE;
         } else if (guess.isEmpty()) {
             steps++;
