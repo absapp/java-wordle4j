@@ -1,6 +1,5 @@
 package ru.yandex.practicum;
 
-import javax.imageio.IIOException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Scanner;
@@ -42,7 +41,7 @@ public class Wordle {
                     if (result.contains("Победа") || result.contains("проиграли")) {
                         break;
                     }
-                }catch (WordleGameException e) {
+                } catch (WordleGameException e) {
                     System.out.println(e.getUserMessage());
                     logger.log("Игровое исключение: " + e.getMessage());
                 }
