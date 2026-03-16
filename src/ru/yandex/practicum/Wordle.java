@@ -48,9 +48,13 @@ public class Wordle {
             }
 
         } catch (IOException e) {
-            logger.log("ОШИБКА: " + e.getMessage());
-        } catch (IllegalArgumentException | NullPointerException | IllegalStateException e) {
-            logger.log("ОШИБКА конфигурации: " + e.getMessage());
+            if (logger != null) {
+                logger.log("ОШИБКА: " + e.getMessage());
+            }
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            if (logger != null) {
+                logger.log("ОШИБКА конфигурации: " + e.getMessage());
+            }
         }
     }
 }

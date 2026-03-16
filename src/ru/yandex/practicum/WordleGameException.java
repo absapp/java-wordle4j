@@ -8,11 +8,10 @@ public abstract class WordleGameException extends RuntimeException {
 
     public abstract String getUserMessage();
 
-
-
-
-
-
-
-
 }
+
+
+
+
+
+

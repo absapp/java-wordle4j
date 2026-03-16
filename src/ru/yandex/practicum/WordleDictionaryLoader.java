@@ -14,6 +14,8 @@ import java.util.List;
     на выходе должен быть класс WordleDictionary
  */
 public class WordleDictionaryLoader {
+
+    public static final int WORD_LENGTH = 5;
     private final Path dictionaryPath;
     private final WordleLogger logger;  // делаем final
 
@@ -35,7 +37,7 @@ public class WordleDictionaryLoader {
             String line;
             while ((line = reader.readLine()) != null) {
                 line = line.toLowerCase().replaceAll("ё", "е").trim();
-                if (line.length() == 5 && !line.isBlank()) {
+                if (line.length() == WORD_LENGTH && !line.isBlank()) {
                     dictionary.add(line);
                 }
             }

@@ -19,6 +19,7 @@ import java.util.Map;
  */
 public class WordleGame {
 
+    public static final int WORD_LENGTH = 5;
     private final String answer;
     private int steps = 0;
     private final int maxSteps;
@@ -48,7 +49,7 @@ public class WordleGame {
             throw new IllegalArgumentException("maxAttempts должен быть положительным");
         }
         if (dictionaryPath == null) {
-            throw new NullPointerException("dictionaryPath не может быть null");
+            throw new IllegalArgumentException("dictionaryPath не может быть null");
         }
     }
 
@@ -60,7 +61,7 @@ public class WordleGame {
         } else if (guess.isEmpty()) {
             steps++;
             return GameStatus.HELP;
-        } else if (guess.length() < 5 || guess.length() > 5) {
+        } else if (guess.length() < WORD_LENGTH || guess.length() > WORD_LENGTH) {
             return GameStatus.WRONG_LENGTH;
         } else if (!dictionary.contains(guess)) {
             return GameStatus.NOT_IN_DICTIONARY;
